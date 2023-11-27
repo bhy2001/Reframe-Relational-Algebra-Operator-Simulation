@@ -5,7 +5,10 @@ warnings.filterwarnings('ignore')
 __all__ = ['Relation', 'GroupWrap']
 
 class Relation():
+    
     def __init__(self,filename:str):
+        #sef.data = dict(col_heads)
+        #col_heads = [records]
         self.data = {}
         with open(filename) as csvFile:
             col_head = next(csvFile).replace("\n", "").split(",")
