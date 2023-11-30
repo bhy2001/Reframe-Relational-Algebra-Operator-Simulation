@@ -7,26 +7,28 @@ __all__ = ['Relation', 'GroupWrap']
 
 class Relation():
 
-    def __init__(self, data):
-        if isinstance(data, str):
-            self.data = {}
-            with open(data) as csvFile:
+    def __init__(self, filename):
+        if isinstance(filename, str):
+            self.filename = {}
+            with open(filename) as csvFile:
                 col_head = next(csvFile).replace("\n", "").split(",")
                 for i in col_head:
-                    self.data[i] = []
+                    self.filename[i] = []
                 read_file = csv.reader(csvFile)
                 for row in read_file:
                     for index, val in enumerate(row):
-                        self.data.get(col_head[index]).append(val)
-        elif isinstance(data, dict):
-            self.data = data
+                        self.filename.get(col_head[index]).append(val)
+        elif isinstance(filename, dict):
+            self.filename = filename
 
     # Singe-table operations:
 
     #     project(cols)
     def project(self, cols):
-        new_data = {col: self.data[col] for col in cols if col in self.data}
-        return Relation(new_data)
+        # no duplicates
+        new_filename = {col: self.filename[col]
+                        for col in cols if col in self.filename}
+        return Relation(new_filename)
     #     rename(old, new)
 
     def rename(self, old, new):
@@ -79,7 +81,7 @@ Dept = Relation('./college/DEPT.csv')
 
 # TESTING FOR PROJECT METHOD
 resultCourses = Courses.project(['CId', 'Title'])
-print(resultCourses.data)
+print(resultCourses.filename)
 print("================================================")
 resultDept = Dept.project(['DId', 'DName'])
-print(resultDept.data)
+print(resultDept.filename)
