@@ -4,6 +4,18 @@ warnings.filterwarnings('ignore')
 
 __all__ = ['Relation', 'GroupWrap']
 
+# Mat: 
+# - Project
+# - Rename
+
+# Bill:
+# - Select
+# - Groupby
+
+# Kevin:
+# - Sort
+# - Extend
+
 class Relation():
     
     def __init__(self,filename:str):
