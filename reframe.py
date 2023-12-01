@@ -2,6 +2,7 @@ import csv
 import warnings
 warnings.filterwarnings('ignore')
 from utils.sort import sortMultiCols
+from utils.extend import extendFunc
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat: 
@@ -34,7 +35,7 @@ class Relation():
                             self.filename.get(col_head[index]).append(int(val))
                         except:
                             self.filename.get(col_head[index]).append(val)
-                            
+                          
                             
         elif isinstance(filename, dict):
             self.filename = filename
@@ -52,8 +53,10 @@ class Relation():
         pass
     #     extend(name, formula)
 
-    def extend(self, name, formula):
-        pass
+    def extend(self, name, formula= None):
+        data = self.filename
+        # data[name] = extendFunc()
+        return data
     #     select(query)
 
     def select(self, query):
@@ -103,4 +106,5 @@ print(resultCourses.filename)
 print("================================================")
 # resultDept = Dept.project(['DId', 'DName'])
 # print(resultDept.filename)
+# print (resultCourses.filename.CId)
 print(resultCourses.sort(['CId'],True))
