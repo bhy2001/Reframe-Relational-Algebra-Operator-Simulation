@@ -5,17 +5,22 @@ from utils.sort import sortMultiCols
 from utils.extend import extendFunc
 __all__ = ['Relation', 'GroupWrap']
 
-# Mat: 
-# - Project
-# - Rename
+# Mat:
+# - Project - handle error
+# - Rename - handle error
+# - Union
+# - join
 
 # Bill:
 # - Select
 # - Groupby
 
 # Kevin:
-# - Sort
-# - Extend
+# - Sort - handle error
+# - Extend - handle error
+# - Product 
+# - Semi 
+
 
 class Relation():
     
@@ -50,8 +55,9 @@ class Relation():
     #     rename(old, new)
 
     def rename(self, old, new):
-        pass
-    #     extend(name, formula)
+        if old in self.filename:
+            self.filename[new] = self.filename.pop(old)
+        return self
 
     def extend(self, name, formula= None):
         data = self.filename
@@ -96,15 +102,3 @@ class Relation():
 
     def outerjoin(self, other):
         pass
-
-Courses = Relation('./college/COURSE.csv')
-Dept = Relation('./college/DEPT.csv')
-
-# TESTING FOR PROJECT METHOD
-resultCourses = Courses.project(['CId', 'Title'])
-print(resultCourses.filename)
-print("================================================")
-# resultDept = Dept.project(['DId', 'DName'])
-# print(resultDept.filename)
-# print (resultCourses.filename.CId)
-print(resultCourses.sort(['CId'],True))
