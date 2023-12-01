@@ -59,4 +59,4 @@ class Relation():
     def outerjoin (self, other):
         pass
 
-Dept = Relation('./college/COURSE.csv')
+Dept = Relation('college/COURSE.csv')
