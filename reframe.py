@@ -4,7 +4,7 @@ warnings.filterwarnings('ignore')
 
 __all__ = ['Relation', 'GroupWrap']
 
-# Mat: 
+# Mat:
 # - Project
 # - Rename
 
@@ -15,6 +15,7 @@ __all__ = ['Relation', 'GroupWrap']
 # Kevin:
 # - Sort
 # - Extend
+
 
 class Relation():
 
@@ -43,8 +44,9 @@ class Relation():
     #     rename(old, new)
 
     def rename(self, old, new):
-        pass
-    #     extend(name, formula)
+        if old in self.filename:
+            self.filename[new] = self.filename.pop(old)
+        return self
 
     def extend(self, name, formula):
         pass
@@ -93,6 +95,17 @@ Dept = Relation('./college/DEPT.csv')
 # TESTING FOR PROJECT METHOD
 resultCourses = Courses.project(['CId', 'Title'])
 print(resultCourses.filename)
-print("================================================")
 resultDept = Dept.project(['DId', 'DName'])
 print(resultDept.filename)
+print("================================================")
+
+# TESTING FOR RENAME METHOD
+resultCourses = Courses.project(['CId', 'Title'])
+print("Before Rename:")
+print(resultCourses.filename)
+# Rename the 'Title' column to 'TitleCourse'
+resultCourses.rename('Title', 'TitleCourse')
+
+print("After Rename:")
+print(resultCourses.filename)
+print("================================================")
