@@ -5,16 +5,20 @@ from utils.sort import sortMultiCols
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat:
-# - Project
-# - Rename
+# - Project - handle error
+# - Rename - handle error
+# - Union
+# - join
 
 # Bill:
 # - Select
 # - Groupby
 
 # Kevin:
-# - Sort
-# - Extend
+# - Sort - handle error
+# - Extend - handle error
+# - Product 
+# - Semi 
 
 
 class Relation():
