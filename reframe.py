@@ -2,19 +2,25 @@ import csv
 import warnings
 warnings.filterwarnings('ignore')
 from utils.sort import sortMultiCols
+from utils.extend import extendFunc
 __all__ = ['Relation', 'GroupWrap']
 
-# Mat: 
-# - Project
-# - Rename
+# Mat:
+# - Project - handle error
+# - Rename - handle error
+# - Union
+# - join
 
 # Bill:
 # - Select
 # - Groupby
 
 # Kevin:
-# - Sort
-# - Extend
+# - Sort - handle error
+# - Extend - handle error
+# - Product 
+# - Semi 
+
 
 class Relation():
     
@@ -33,7 +39,7 @@ class Relation():
                             self.filename.get(col_head[index]).append(int(val))
                         except:
                             self.filename.get(col_head[index]).append(val)
-                            
+                          
                             
         elif isinstance(filename, dict):
             self.filename = filename
@@ -48,11 +54,14 @@ class Relation():
     #     rename(old, new)
 
     def rename(self, old, new):
-        pass
-    #     extend(name, formula)
+        if old in self.filename:
+            self.filename[new] = self.filename.pop(old)
+        return self
 
-    def extend(self, name, formula):
-        pass
+    def extend(self, name, formula= None):
+        data = self.filename
+        # data[name] = extendFunc()
+        return data
     #     select(query)
 
     def select(self, query):
