@@ -29,7 +29,6 @@ class Relation():
                 read_file = csv.reader(csvFile)
                 for row in read_file:
                     for index, val in enumerate(row):
-                        
                         try:
                             self.filename.get(col_head[index]).append(int(val))
                         except:
@@ -93,14 +92,3 @@ class Relation():
 
     def outerjoin(self, other):
         pass
-
-Courses = Relation('./college/COURSE.csv')
-Dept = Relation('./college/DEPT.csv')
-
-# TESTING FOR PROJECT METHOD
-resultCourses = Courses.project(['CId', 'Title'])
-print(resultCourses.filename)
-print("================================================")
-# resultDept = Dept.project(['DId', 'DName'])
-# print(resultDept.filename)
-print(resultCourses.sort(['CId'],True))
