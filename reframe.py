@@ -36,7 +36,10 @@ class Relation():
                 for row in read_file:
                     for index, val in enumerate(row):
                         try:
-                            self.filename.get(col_head[index]).append(int(val))
+                            if int(val):
+                                self.filename.get(col_head[index]).append(int(val))
+                            elif float(val):
+                                self.filename.get(col_head[index]).append(float(val))
                         except:
                             self.filename.get(col_head[index]).append(val)
                           
@@ -58,10 +61,21 @@ class Relation():
             self.filename[new] = self.filename.pop(old)
         return self
 
-    def extend(self, name, formula= None):
+    def extend(self, name, operand0 = None, operand1 = None, operatetion= None):
         data = self.filename
-        # data[name] = extendFunc()
-        return data
+        operatetionList = ["+", "-", "/", "*"]
+        if not operand0:
+            data[name] = []  
+            return data          
+        if not operand1:
+            data[name] = operand0
+            return data
+        if not operatetion or operatetion not in operatetionList:
+            return {"Fail": "Wrong Operation"}
+        try:            
+            data[name] = extendFunc(operand0, operand1, operatetion)
+            return data
+        except: return {"Fail": f"{operand0[0] } and {operand1} not same type"}
     #     select(query)
 
     def select(self, query):
@@ -69,7 +83,8 @@ class Relation():
     #     sort(cols, order)
 
     def sort(self, cols, order=False):
-        data = sortMultiCols(self.filename, cols, order)
+        if self.verifyCols(cols):
+            data = sortMultiCols(self.filename, cols, order)
         return data
         
     #     gropby(cols)
@@ -101,3 +116,20 @@ class Relation():
 
     def outerjoin(self, other):
         pass
+    
+    def getColData (self, col): 
+        try:
+            return {col: self.filename[col]}
+        except: 
+            return {"Fail": "No such column head in this table"}
+    def getColsDataType (self, cols, data=None):
+        if not data:
+            data = self.filename
+        return [type(data[col][0]) for col in cols]
+    
+    def verifyCols(self, cols):
+        try:
+            return [self.filename[col] for col in cols]
+        except:
+            return {"Fail": "No such column head in this table"}
+        
