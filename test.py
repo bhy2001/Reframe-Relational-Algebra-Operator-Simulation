@@ -20,3 +20,9 @@ resultCourses.rename('Title', 'TitleCourse')
 print("After Rename:")
 print(resultCourses.filename)
 print("================================================")
+
+
+# TESTING FOR UNION METHOD
+resultUnion = Courses.union(Dept)
+print("Union Result:")
+print(resultUnion.filename)

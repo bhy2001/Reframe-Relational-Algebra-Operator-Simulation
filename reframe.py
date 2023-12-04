@@ -67,12 +67,20 @@ class Relation():
     #     product(other)
     def product(self, other):
         pass
+
     #     union(other)
-
     def union(self, other):
-        pass
-    #     join(other, condition)
+        if set(self.filename.keys()) != set(other.filename.keys()):
+            print("Columns in Courses:", list(self.filename.keys()))
+            print("Columns in Dept:", list(other.filename.keys()))
+            raise ValueError(
+                "Union can only be performed on relations with the same set of columns.")
 
+        new_data = {col: self.filename[col] +
+                    other.filename[col] for col in self.filename}
+        return Relation(new_data)
+
+    #     join(other, condition)
     def join(self, other, condition):
         pass
     #     semijoin(other)
