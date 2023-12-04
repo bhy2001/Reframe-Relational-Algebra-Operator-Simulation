@@ -61,21 +61,23 @@ class Relation():
             self.filename[new] = self.filename.pop(old)
         return self
 
-    def extend(self, name, operand0 = None, operand1 = None, operatetion= None):
+    def extend(self, name, operand0 = None, operand1 = None, operator= None):
         data = self.filename
-        operatetionList = ["+", "-", "/", "*"]
+        operatorList = ["+", "-", "/", "*"]
+        if data.get(name):
+            return {"Fail"}
         if not operand0:
             data[name] = []  
             return data          
         if not operand1:
             data[name] = operand0
             return data
-        if not operatetion or operatetion not in operatetionList:
+        if not operator or operator not in operatorList:
             return {"Fail": "Wrong Operation"}
         try:            
-            data[name] = extendFunc(operand0, operand1, operatetion)
+            data[name] = extendFunc(operand0, operand1, operator)
             return data
-        except: return {"Fail": f"{operand0[0] } and {operand1} not same type"}
+        except: return {"Fail": f"{operand0 } and {operand1} not same type"}
     #     select(query)
 
     def select(self, query):
@@ -95,7 +97,8 @@ class Relation():
 
     #     product(other)
     def product(self, other):
-        pass
+        data = self.filename
+        for 
     #     union(other)
 
     def union(self, other):
@@ -119,7 +122,7 @@ class Relation():
     
     def getColData (self, col): 
         try:
-            return {col: self.filename[col]}
+            return self.filename[col]
         except: 
             return {"Fail": "No such column head in this table"}
     def getColsDataType (self, cols, data=None):
@@ -132,4 +135,6 @@ class Relation():
             return [self.filename[col] for col in cols]
         except:
             return {"Fail": "No such column head in this table"}
+    def getTableData (self):
+        return self.filename
         
