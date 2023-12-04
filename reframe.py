@@ -96,9 +96,21 @@ class Relation():
     # Multi-table operations:
 
     #     product(other)
-    def product(self, other):
+    def product(self, other: Relation):
         data = self.filename
-        for 
+        colHead = self.getTabelHead()
+        otherColHead = other.getTabelHead()
+        otherData = other.getTableData()
+        colData = self.getColData(colHead[0])
+        res = {}
+        for otherH in colHead:
+            res[otherH] = []
+        for h in colHead:
+            res[h] =[]
+        for idx, row in enumerate(colData):
+            for i in otherColHead:
+                [res[i].append(otherRow) for  otherRow in otherData[i]]
+                [res[]]
     #     union(other)
 
     def union(self, other):
@@ -137,4 +149,6 @@ class Relation():
             return {"Fail": "No such column head in this table"}
     def getTableData (self):
         return self.filename
-        
+    
+    def getTabelHead (self):
+        return [col for col in self.filename]
