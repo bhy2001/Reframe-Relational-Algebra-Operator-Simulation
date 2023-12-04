@@ -2,6 +2,7 @@ import csv
 import warnings
 warnings.filterwarnings('ignore')
 from utils.sort import sortMultiCols
+from utils.select import select_aux
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat:
@@ -62,8 +63,14 @@ class Relation():
         pass
     #     select(query)
 
-    def select(self, query):
-        pass
+    def select(self, operand2, operator, operand2):
+        operator_list = ["=", ">", "<", ">=", "<="]
+        if operand1 in self.filename and operator in operator_list:
+            db = self.filename
+            return select_aux(db, operand1, operator, operand2)
+        else:
+            return []
+        
     #     sort(cols, order)
 
     def sort(self, cols, order=False):
@@ -97,9 +104,6 @@ class Relation():
         pass
     #     outerjoin(other)
 
-<<<<<<< HEAD
 Dept = Relation('college/COURSE.csv')
-=======
-    def outerjoin(self, other):
-        pass
->>>>>>> 574381e178c1d90557810b6e3310bcab6a87b868
+def outerjoin(self, other):
+    pass
