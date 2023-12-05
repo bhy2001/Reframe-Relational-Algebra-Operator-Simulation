@@ -96,21 +96,22 @@ class Relation():
     # Multi-table operations:
 
     #     product(other)
-    def product(self, other: Relation):
+    def product(self, other):
         data = self.filename
         colHead = self.getTabelHead()
         otherColHead = other.getTabelHead()
         otherData = other.getTableData()
         colData = self.getColData(colHead[0])
         res = {}
-        for otherH in colHead:
+        for otherH in otherColHead:
             res[otherH] = []
         for h in colHead:
             res[h] =[]
         for idx, row in enumerate(colData):
             for i in otherColHead:
                 [res[i].append(otherRow) for  otherRow in otherData[i]]
-                [res[]]
+                [res[row].append(data[row][idx]) for row in data]
+        return res
     #     union(other)
 
     def union(self, other):

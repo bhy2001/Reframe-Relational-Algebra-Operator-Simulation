@@ -11,3 +11,5 @@ print("================================================")
 # print(resultCourses.sort(['CId'],True))
 
 print(resultCourses.extend('Test', resultCourses.getColData('CId'), resultCourses.getColData('CId'), "-"))
+
+print(Courses.product(Dept))
