@@ -2,6 +2,7 @@ import csv
 import warnings
 warnings.filterwarnings('ignore')
 from utils.sort import sortMultiCols
+from utils.extend import extendFunc
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat:
@@ -34,12 +35,14 @@ class Relation():
                 read_file = csv.reader(csvFile)
                 for row in read_file:
                     for index, val in enumerate(row):
-                        
                         try:
-                            self.filename.get(col_head[index]).append(int(val))
+                            if int(val):
+                                self.filename.get(col_head[index]).append(int(val))
+                            elif float(val):
+                                self.filename.get(col_head[index]).append(float(val))
                         except:
                             self.filename.get(col_head[index]).append(val)
-                            
+                          
                             
         elif isinstance(filename, dict):
             self.filename = filename
@@ -58,8 +61,23 @@ class Relation():
             self.filename[new] = self.filename.pop(old)
         return self
 
-    def extend(self, name, formula):
-        pass
+    def extend(self, name, operand0 = None, operand1 = None, operator= None):
+        data = self.filename
+        operatorList = ["+", "-", "/", "*"]
+        if data.get(name):
+            return {"Fail"}
+        if not operand0:
+            data[name] = []  
+            return data          
+        if not operand1:
+            data[name] = operand0
+            return data
+        if not operator or operator not in operatorList:
+            return {"Fail": "Wrong Operation"}
+        try:            
+            data[name] = extendFunc(operand0, operand1, operator)
+            return data
+        except: return {"Fail": f"{operand0 } and {operand1} not same type"}
     #     select(query)
 
     def select(self, query):
@@ -67,7 +85,8 @@ class Relation():
     #     sort(cols, order)
 
     def sort(self, cols, order=False):
-        data = sortMultiCols(self.filename, cols, order)
+        if self.verifyCols(cols):
+            data = sortMultiCols(self.filename, cols, order)
         return data
         
     #     gropby(cols)
@@ -78,7 +97,21 @@ class Relation():
 
     #     product(other)
     def product(self, other):
-        pass
+        data = self.filename
+        colHead = self.getTabelHead()
+        otherColHead = other.getTabelHead()
+        otherData = other.getTableData()
+        colData = self.getColData(colHead[0])
+        res = {}
+        for otherH in otherColHead:
+            res[otherH] = []
+        for h in colHead:
+            res[h] =[]
+        for idx, row in enumerate(colData):
+            for i in otherColHead:
+                [res[i].append(otherRow) for  otherRow in otherData[i]]
+                [res[row].append(data[row][idx]) for row in data]
+        return res
     #     union(other)
 
     def union(self, other):
@@ -99,3 +132,24 @@ class Relation():
 
     def outerjoin(self, other):
         pass
+    
+    def getColData (self, col): 
+        try:
+            return self.filename[col]
+        except: 
+            return {"Fail": "No such column head in this table"}
+    def getColsDataType (self, cols, data=None):
+        if not data:
+            data = self.filename
+        return [type(data[col][0]) for col in cols]
+    
+    def verifyCols(self, cols):
+        try:
+            return [self.filename[col] for col in cols]
+        except:
+            return {"Fail": "No such column head in this table"}
+    def getTableData (self):
+        return self.filename
+    
+    def getTabelHead (self):
+        return [col for col in self.filename]

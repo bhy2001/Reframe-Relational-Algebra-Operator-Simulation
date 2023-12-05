@@ -1,0 +1,19 @@
+DId,DName,CId,Title,DeptId
+10,compsci,12,db systems,10
+10,compsci,22,compilers,10
+10,compsci,32,calculus,20
+10,compsci,42,algebra,20
+10,compsci,52,acting,30
+10,compsci,62,elocution,30
+20,math,12,db systems,10
+20,math,22,compilers,10
+20,math,32,calculus,20
+20,math,42,algebra,20
+20,math,52,acting,30
+20,math,62,elocution,30
+30,drama,12,db systems,10
+30,drama,22,compilers,10
+30,drama,32,calculus,20
+30,drama,42,algebra,20
+30,drama,52,acting,30
+30,drama,62,elocution,30
