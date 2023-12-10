@@ -3,7 +3,6 @@ import warnings
 warnings.filterwarnings('ignore')
 from utils.sort import sortMultiCols
 from utils.extend import extendFunc
-from utils.select import select_aux
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat:
@@ -15,8 +14,6 @@ __all__ = ['Relation', 'GroupWrap']
 # Bill:
 # - Select
 # - Groupby
-# - antijoin
-# - outerjoin
 
 # Kevin:
 # - Sort - handle error
@@ -83,14 +80,8 @@ class Relation():
         except: return {"Fail": f"{operand0 } and {operand1} not same type"}
     #     select(query)
 
-    def select(self, operand2, operator, operand2):
-        operator_list = ["=", ">", "<", ">=", "<="]
-        if operand1 in self.filename and operator in operator_list:
-            db = self.filename
-            return select_aux(db, operand1, operator, operand2)
-        else:
-            return []
-        
+    def select(self, query):
+        pass
     #     sort(cols, order)
 
     def sort(self, cols, order=False):
@@ -164,3 +155,24 @@ class Relation():
         #         [res[h].append(data[h][idx] | 'null') for h in dataHead]
         # return Relation(res)
         pass
+    
+    def getColData (self, col): 
+        try:
+            return self.filename[col]
+        except: 
+            return {"Fail": "No such column head in this table"}
+    def getColsDataType (self, cols, data=None):
+        if not data:
+            data = self.filename
+        return [type(data[col][0]) for col in cols]
+    
+    def verifyCols(self, cols):
+        try:
+            return [self.filename[col] for col in cols]
+        except:
+            return {"Fail": "No such column head in this table"}
+    def getTableData (self):
+        return self.filename
+    
+    def getTabelHead (self):
+        return [col for col in self.filename]
