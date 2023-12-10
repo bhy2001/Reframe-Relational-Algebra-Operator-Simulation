@@ -14,6 +14,8 @@ __all__ = ['Relation', 'GroupWrap']
 # Bill:
 # - Select
 # - Groupby
+# - antijoin
+# - outerjoin
 
 # Kevin:
 # - Sort - handle error
@@ -107,3 +109,4 @@ class Relation():
 Dept = Relation('college/COURSE.csv')
 def outerjoin(self, other):
     pass
+
