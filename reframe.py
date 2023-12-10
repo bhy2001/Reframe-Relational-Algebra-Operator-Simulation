@@ -68,15 +68,15 @@ class Relation():
             return {"Fail"}
         if not operand0:
             data[name] = []  
-            return data          
+            return Relation(data)
         if not operand1:
             data[name] = operand0
-            return data
+            return Relation(data)
         if not operator or operator not in operatorList:
             return {"Fail": "Wrong Operation"}
         try:            
             data[name] = extendFunc(operand0, operand1, operator)
-            return data
+            return Relation(data)
         except: return {"Fail": f"{operand0 } and {operand1} not same type"}
     #     select(query)
 
@@ -87,7 +87,7 @@ class Relation():
     def sort(self, cols, order=False):
         if self.verifyCols(cols):
             data = sortMultiCols(self.filename, cols, order)
-        return data
+        return Relation(data)
         
     #     gropby(cols)
 
@@ -111,7 +111,7 @@ class Relation():
             for i in otherColHead:
                 [res[i].append(otherRow) for  otherRow in otherData[i]]
                 [res[row].append(data[row][idx]) for row in data]
-        return res
+        return Relation(res)
     #     union(other)
 
     def union(self, other):
@@ -122,15 +122,38 @@ class Relation():
         pass
     #     semijoin(other)
 
-    def semijoin(self, other):
-        pass
+    def semijoin(self, other, condition):
+        data = self.filename
+        dataHead  = self.getTabelHead() 
+        colD = self.getColData(condition[0])
+        otherColD = other.getColData(condition[1])
+        res = dict()
+        for i in dataHead:
+            res[i] = []
+        for idx, val in enumerate(colD):
+            if val in otherColD:
+                [res[h].append(data[h][idx]) for h in dataHead]
+        return Relation(res)
     #     antijoin(other)
 
     def antijoin(self, other):
         pass
     #     outerjoin(other)
 
-    def outerjoin(self, other):
+    def outerjoin(self, other, condition):
+        # data = self.filename
+        # dataHead  = self.getTabelHead() 
+        # otherHead = other.getTableHead()
+        # colD = self.getColData(condition[0])
+        # otherColD = other.getColData(condition[1])
+        # res = dict()
+        # dataHead = dataHead+ otherHead
+        # for i in dataHead:
+        #     res[i] = []
+        # for idx, val in enumerate(colD):
+        #     if val not in otherColD:
+        #         [res[h].append(data[h][idx] | 'null') for h in dataHead]
+        # return Relation(res)
         pass
     
     def getColData (self, col): 
