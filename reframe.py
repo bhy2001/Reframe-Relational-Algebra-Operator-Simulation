@@ -1,6 +1,7 @@
 from utils.groupby import *
 from utils.extend import extendFunc
 from utils.sort import sortMultiCols
+from utils.select import *
 import csv
 import warnings
 warnings.filterwarnings('ignore')
@@ -73,24 +74,24 @@ class Relation():
     def extend(self, name, operand0=None, operand1=None, operator=None):
         data = self.filename
         operatorList = ["+", "-", "/", "*"]
-        if data.get(name):
+        if not self.verifyCols([name]):
             return {"Fail"}
-        if not operand0:
-            data[name] = []
-            return Relation(data)
-        if not operand1:
+        elif not operand0:
+            data[name] = []  
+        elif not operand1:
             data[name] = operand0
-            return Relation(data)
-        if not operator or operator not in operatorList:
+        elif not operator or operator not in operatorList:
             return {"Fail": "Wrong Operation"}
-        try:
-            data[name] = extendFunc(operand0, operand1, operator)
-            return Relation(data)
-        except:
-            return {"Fail": f"{operand0 } and {operand1} not same type"}
+
+        else:
+            try:            
+                data[name] = extendFunc(operand0, operand1, operator)
+            except: return {"Fail": f"{operand0 } and {operand1} not same type"}
+        return Relation(data)
+
     #     select(query)
 
-    def select(self, query):
+    def select(self, operand1, operand2, operator):
         operator_list = ["=", ">", "<", ">=", "<="]
         if operand1 in self.filename and operator in operator_list:
             db = self.filename
@@ -194,7 +195,7 @@ class Relation():
         return Relation(res)
     #     antijoin(other)
 
-    def antijoin(self, other):
+    def antijoin(self, other, condition):
         data = self.filename
         dataHead  = self.getTabelHead() 
         colD = self.getColData(condition[0])
@@ -239,7 +240,8 @@ class Relation():
 
     def verifyCols(self, cols):
         try:
-            return [self.filename[col] for col in cols]
+            [self.filename[col] for col in cols]
+            return True
         except:
             return {"Fail": "No such column head in this table"}
 
