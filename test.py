@@ -10,6 +10,7 @@ print("================================================")
 # print (resultCourses.filename.CId)
 # print(resultCourses.sort(['CId'],True))
 
-print(resultCourses.extend('Test', resultCourses.getColData('CId'), resultCourses.getColData('CId'), "-"))
+# print(resultCourses.extend('Test', resultCourses.getColData('CId'), resultCourses.getColData('CId'), "-"))
 
-print(Courses.product(Dept))
+# print(Courses.product(Dept).filename)
+print(Courses.semijoin(Dept,['DeptId','DId']).filename)
