@@ -91,7 +91,12 @@ class Relation():
     #     select(query)
 
     def select(self, query):
-        pass
+        operator_list = ["=", ">", "<", ">=", "<="]
+        if operand1 in self.filename and operator in operator_list:
+            db = self.filename
+            return select_aux(db, operand1, operator, operand2)
+        else:
+            return []
     #     sort(cols, order)
 
     def sort(self, cols, order=False):
@@ -190,26 +195,38 @@ class Relation():
     #     antijoin(other)
 
     def antijoin(self, other):
-        pass
+        data = self.filename
+        dataHead  = self.getTabelHead() 
+        colD = self.getColData(condition[0])
+        otherColD = other.getColData(condition[1])
+        res = dict()
+        for i in dataHead:
+            res[i] = []
+        for idx, val in enumerate(colD):
+            if val not in otherColD:
+                [res[h].append(data[h][idx]) for h in dataHead]
+        return Relation(res)
     #     outerjoin(other)
 
     def outerjoin(self, other, condition):
-        # data = self.filename
-        # dataHead  = self.getTabelHead()
-        # otherHead = other.getTableHead()
-        # colD = self.getColData(condition[0])
-        # otherColD = other.getColData(condition[1])
-        # res = dict()
-        # dataHead = dataHead+ otherHead
-        # for i in dataHead:
-        #     res[i] = []
-        # for idx, val in enumerate(colD):
-        #     if val not in otherColD:
-        #         [res[h].append(data[h][idx] | 'null') for h in dataHead]
-        # return Relation(res)
-        pass
-
-    def getColData(self, col):
+        data = self.filename
+        dataHead  = self.getTabelHead() 
+        otherHead = other.getTableHead()
+        colD = self.getColData(condition[0])
+        otherColD = other.getColData(condition[1])
+        res = dict()
+        dataHead = dataHead + otherHead
+        for i in dataHead:
+            res[i] = []
+        for idx, val in enumerate(colD):
+            if val not in otherColD:
+                [res[h].append(data[h][idx] | 'null') for h in dataHead]
+        for idx, val in enumerate(otherColD):
+            if val not in colD:
+                [res[h].append(data[h][idx] | 'null') for h in dataHead]
+        return Relation(res)
+    
+    def getColData (self, col): 
         try:
             return self.filename[col]
         except:
@@ -228,6 +245,8 @@ class Relation():
 
     def getTableData(self):
         return self.filename
-
-    def getTabelHead(self):
+    
+    def getTabelHead (self):
         return [col for col in self.filename]
+
+
