@@ -1,9 +1,9 @@
+from utils.groupby import *
+from utils.extend import extendFunc
+from utils.sort import sortMultiCols
 import csv
 import warnings
 warnings.filterwarnings('ignore')
-from utils.sort import sortMultiCols
-from utils.extend import extendFunc
-from utils.groupby import *
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat:
@@ -19,16 +19,16 @@ __all__ = ['Relation', 'GroupWrap']
 # Kevin:
 # - Sort - handle error
 # - Extend - handle error
-# - Product 
-# - Semi 
+# - Product
+# - Semi
 
 
 class Relation():
-    
+
     def __init__(self, filename):
         if isinstance(filename, str):
             self.filename = {}
-            
+
             with open(filename) as csvFile:
                 col_head = next(csvFile).replace("\n", "").split(",")
                 for i in col_head:
@@ -38,47 +38,56 @@ class Relation():
                     for index, val in enumerate(row):
                         try:
                             if int(val):
-                                self.filename.get(col_head[index]).append(int(val))
+                                self.filename.get(
+                                    col_head[index]).append(int(val))
                             elif float(val):
-                                self.filename.get(col_head[index]).append(float(val))
+                                self.filename.get(
+                                    col_head[index]).append(float(val))
                         except:
                             self.filename.get(col_head[index]).append(val)
-                          
-                            
+
         elif isinstance(filename, dict):
             self.filename = filename
     # Singe-table operations:
 
-    #     project(cols)
+    # project
     def project(self, cols):
-        # no duplicates
-        new_filename = {col: self.filename[col]
-                        for col in cols if col in self.filename}
-        return Relation(new_filename)
-    #     rename(old, new)
+        for col in cols:
+            if col not in self.filename:
+                raise KeyError(f"Column '{col}' not found in relation")
 
+        new_data = {col: self.filename[col] for col in cols}
+        return Relation(new_data)
+
+    # rename
     def rename(self, old, new):
-        if old in self.filename:
-            self.filename[new] = self.filename.pop(old)
+        if old not in self.filename:
+            raise KeyError(f"Column '{old}' not found in relation")
+
+        if new in self.filename:
+            raise ValueError(f"Column '{new}' already exists in relation")
+
+        self.filename[new] = self.filename.pop(old)
         return self
 
-    def extend(self, name, operand0 = None, operand1 = None, operator= None):
+    def extend(self, name, operand0=None, operand1=None, operator=None):
         data = self.filename
         operatorList = ["+", "-", "/", "*"]
         if data.get(name):
             return {"Fail"}
         if not operand0:
-            data[name] = []  
+            data[name] = []
             return Relation(data)
         if not operand1:
             data[name] = operand0
             return Relation(data)
         if not operator or operator not in operatorList:
             return {"Fail": "Wrong Operation"}
-        try:            
+        try:
             data[name] = extendFunc(operand0, operand1, operator)
             return Relation(data)
-        except: return {"Fail": f"{operand0 } and {operand1} not same type"}
+        except:
+            return {"Fail": f"{operand0 } and {operand1} not same type"}
     #     select(query)
 
     def select(self, query):
@@ -89,26 +98,26 @@ class Relation():
         if self.verifyCols(cols):
             data = sortMultiCols(self.filename, cols, order)
         return Relation(data)
-        
+
     #     gropby(cols)
 
     def groupby(self, cols, operator=None):
-        operation = [None, 'count','sum','mean','median','min','max']
+        operation = [None, 'count', 'sum', 'mean', 'median', 'min', 'max']
         if self.verifyCols(cols):
             data = GroupByCols(self.filename, cols, operator)
             if operator in operation:
                 pass
-            else: 
+            else:
                 return {"Fail": "No such operator"}
 
         return Relation(data)
     # def count (self, cols, operation):
     #     if operation == "groupby":
-            
-        
+
     # Multi-table operations:
 
     #     product(other)
+
     def product(self, other):
         data = self.filename
         colHead = self.getTabelHead()
@@ -119,25 +128,56 @@ class Relation():
         for otherH in otherColHead:
             res[otherH] = []
         for h in colHead:
-            res[h] =[]
+            res[h] = []
         for idx, row in enumerate(colData):
             for i in otherColHead:
-                [res[i].append(otherRow) for  otherRow in otherData[i]]
+                [res[i].append(otherRow) for otherRow in otherData[i]]
                 [res[row].append(data[row][idx]) for row in data]
         return Relation(res)
     #     union(other)
 
     def union(self, other):
-        pass
-    #     join(other, condition)
+        if set(self.filename.keys()) != set(other.filename.keys()):
+            print("Columns in Courses:", list(self.filename.keys()))
+            print("Columns in Dept:", list(other.filename.keys()))
+            raise ValueError(
+                "Union can only be performed on relations with the same set of columns.")
 
+        new_data = {col: self.filename[col] +
+                    other.filename[col] for col in self.filename}
+        return Relation(new_data)
+
+    #     join(other, condition)
     def join(self, other, condition):
-        pass
+        # Condition should be a tuple specifying (left_col, right_col)
+        left_col, right_col = condition
+
+        # Construct new dictionary to hold join output
+        join_dict = {}
+        for col in set(self.filename.keys()) | set(other.filename.keys()):
+            join_dict[col] = []
+
+        # Go through rows and populate output
+        for i in range(len(self.filename[left_col])):
+            left_val = self.filename[left_col][i]
+
+            # Find matching right val
+            for j in range(len(other.filename[right_col])):
+                right_val = other.filename[right_col][j]
+                if left_val == right_val:
+                    # Match found, populate output row
+                    for col in join_dict:
+                        if col in self.filename:
+                            join_dict[col].append(self.filename[col][i])
+                        elif col in other.filename:
+                            join_dict[col].append(other.filename[col][j])
+
+        return Relation(join_dict)
     #     semijoin(other)
 
     def semijoin(self, other, condition):
         data = self.filename
-        dataHead  = self.getTabelHead() 
+        dataHead = self.getTabelHead()
         colD = self.getColData(condition[0])
         otherColD = other.getColData(condition[1])
         res = dict()
@@ -155,7 +195,7 @@ class Relation():
 
     def outerjoin(self, other, condition):
         # data = self.filename
-        # dataHead  = self.getTabelHead() 
+        # dataHead  = self.getTabelHead()
         # otherHead = other.getTableHead()
         # colD = self.getColData(condition[0])
         # otherColD = other.getColData(condition[1])
@@ -168,24 +208,26 @@ class Relation():
         #         [res[h].append(data[h][idx] | 'null') for h in dataHead]
         # return Relation(res)
         pass
-    
-    def getColData (self, col): 
+
+    def getColData(self, col):
         try:
             return self.filename[col]
-        except: 
+        except:
             return {"Fail": "No such column head in this table"}
-    def getColsDataType (self, cols, data=None):
+
+    def getColsDataType(self, cols, data=None):
         if not data:
             data = self.filename
         return [type(data[col][0]) for col in cols]
-    
+
     def verifyCols(self, cols):
         try:
             return [self.filename[col] for col in cols]
         except:
             return {"Fail": "No such column head in this table"}
-    def getTableData (self):
+
+    def getTableData(self):
         return self.filename
-    
-    def getTabelHead (self):
+
+    def getTabelHead(self):
         return [col for col in self.filename]

@@ -1,8 +1,6 @@
 SectId,CourseId,Prof,YearOffered
-13,12,turing,2018
-23,12,turing,2016
+13,12,turing,2018  
+23,12,turing,2016 
 33,32,newton,2017
-43,32,einstein,2018
+43,32,einstein,2018  
 53,62,brando,2017
-13,12,turing,1988
-33,32,newton,2017
