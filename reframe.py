@@ -65,20 +65,19 @@ class Relation():
     def extend(self, name, operand0 = None, operand1 = None, operator= None):
         data = self.filename
         operatorList = ["+", "-", "/", "*"]
-        if data.get(name):
+        if not self.verifyCols([name]):
             return {"Fail"}
-        if not operand0:
+        elif not operand0:
             data[name] = []  
-            return Relation(data)
-        if not operand1:
+        elif not operand1:
             data[name] = operand0
-            return Relation(data)
-        if not operator or operator not in operatorList:
+        elif not operator or operator not in operatorList:
             return {"Fail": "Wrong Operation"}
-        try:            
-            data[name] = extendFunc(operand0, operand1, operator)
-            return Relation(data)
-        except: return {"Fail": f"{operand0 } and {operand1} not same type"}
+        else:
+            try:            
+                data[name] = extendFunc(operand0, operand1, operator)
+            except: return {"Fail": f"{operand0 } and {operand1} not same type"}
+        return Relation(data)
     #     select(query)
 
     def select(self, query):
@@ -181,7 +180,8 @@ class Relation():
     
     def verifyCols(self, cols):
         try:
-            return [self.filename[col] for col in cols]
+            [self.filename[col] for col in cols]
+            return True
         except:
             return {"Fail": "No such column head in this table"}
     def getTableData (self):
