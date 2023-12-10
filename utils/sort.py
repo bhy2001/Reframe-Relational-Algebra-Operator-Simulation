@@ -12,7 +12,7 @@ def sortMultiCols (data:dict, Cols:list, order:bool = False) -> dict:
     SortData  = getSortCols(traverse,colsIndex(data,Cols)) 
     # print("dd",traverse)
     # print("dd",data)
-    sortedData = generateRes(data, traverse, sortDict(SortData, order=order))
+    # sortedData = generateRes(data, traverse, sortDict(SortData, order=order))
     return generateRes(data,traverse, sortDict(SortData, order=order))
 
 # def sortListBySequence (data, sortDataList, Cols):
