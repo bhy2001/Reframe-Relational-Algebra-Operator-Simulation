@@ -141,19 +141,20 @@ class Relation():
     #     outerjoin(other)
 
     def outerjoin(self, other, condition):
-        data = self.filename
-        dataHead  = self.getTabelHead() 
-        otherHead = other.getTableHead()
-        colD = self.getColData(condition[0])
-        otherColD = other.getColData(condition[1])
-        res = dict()
-        dataHead = dataHead+ otherHead
-        for i in dataHead:
-            res[i] = []
-        for idx, val in enumerate(colD):
-            if val not in otherColD:
-                [res[h].append(data[h][idx] | 'null') for h in dataHead]
-        return Relation(res)
+        # data = self.filename
+        # dataHead  = self.getTabelHead() 
+        # otherHead = other.getTableHead()
+        # colD = self.getColData(condition[0])
+        # otherColD = other.getColData(condition[1])
+        # res = dict()
+        # dataHead = dataHead+ otherHead
+        # for i in dataHead:
+        #     res[i] = []
+        # for idx, val in enumerate(colD):
+        #     if val not in otherColD:
+        #         [res[h].append(data[h][idx] | 'null') for h in dataHead]
+        # return Relation(res)
+        pass
     
     def getColData (self, col): 
         try:
