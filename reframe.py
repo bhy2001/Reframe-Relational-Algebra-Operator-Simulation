@@ -3,6 +3,7 @@ import warnings
 warnings.filterwarnings('ignore')
 from utils.sort import sortMultiCols
 from utils.extend import extendFunc
+from utils.groupby import *
 __all__ = ['Relation', 'GroupWrap']
 
 # Mat:
@@ -91,8 +92,20 @@ class Relation():
         
     #     gropby(cols)
 
-    def groupby(self, cols):
-        pass
+    def groupby(self, cols, operator=None):
+        operation = [None, 'count','sum','mean','median','min','max']
+        if self.verifyCols(cols):
+            data = GroupByCols(self.filename, cols, operator)
+            if operator in operation:
+                pass
+            else: 
+                return {"Fail": "No such operator"}
+
+        return Relation(data)
+    # def count (self, cols, operation):
+    #     if operation == "groupby":
+            
+        
     # Multi-table operations:
 
     #     product(other)
