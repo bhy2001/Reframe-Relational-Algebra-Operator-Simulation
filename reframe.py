@@ -137,7 +137,17 @@ class Relation():
     #     antijoin(other)
 
     def antijoin(self, other):
-        pass
+        data = self.filename
+        dataHead  = self.getTabelHead() 
+        colD = self.getColData(condition[0])
+        otherColD = other.getColData(condition[1])
+        res = dict()
+        for i in dataHead:
+            res[i] = []
+        for idx, val in enumerate(colD):
+            if val not in otherColD:
+                [res[h].append(data[h][idx]) for h in dataHead]
+        return Relation(res)
     #     outerjoin(other)
 
     def outerjoin(self, other, condition):
