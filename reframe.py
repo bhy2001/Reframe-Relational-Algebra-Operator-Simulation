@@ -8,14 +8,6 @@ __all__ = ['Relation', 'GroupWrap']
 # - Project - handle error
 # - Rename - hanndle error
 
-# Bill:
-# - Select
-# - Groupby
-
-# Kevin:
-# - Sort
-# - Extend
-
 
 class Relation():
 
@@ -35,17 +27,24 @@ class Relation():
 
     # Singe-table operations:
 
-    #     project(cols)
+    # project
     def project(self, cols):
-        # no duplicates
-        new_filename = {col: self.filename[col]
-                        for col in cols if col in self.filename}
-        return Relation(new_filename)
-    #     rename(old, new)
+        for col in cols:
+            if col not in self.filename:
+                raise KeyError(f"Column '{col}' not found in relation")
 
+        new_data = {col: self.filename[col] for col in cols}
+        return Relation(new_data)
+
+    # rename
     def rename(self, old, new):
-        if old in self.filename:
-            self.filename[new] = self.filename.pop(old)
+        if old not in self.filename:
+            raise KeyError(f"Column '{old}' not found in relation")
+
+        if new in self.filename:
+            raise ValueError(f"Column '{new}' already exists in relation")
+
+        self.filename[new] = self.filename.pop(old)
         return self
 
     def extend(self, name, formula):
@@ -175,5 +174,3 @@ Enroll = Relation('./college/ENROLL.csv')
 Section = Relation('./college/SECTION.csv')
 Student = Relation('./college/STUDENT.csv')
 Dept = Relation('./college/Dept.csv')
-
-
