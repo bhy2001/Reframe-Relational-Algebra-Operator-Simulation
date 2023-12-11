@@ -61,6 +61,7 @@ class TestRelation:
         # print(test.product(test0).filename)
         assert test.product(test0).filename == expectRes
 
+
     def test_semijoin(self):
         pass
 
@@ -92,3 +93,15 @@ class TestRelation:
 
         # Compare sets
         assert result_set == expected
+    
+    def test_antijoin(self):
+        course_table = Relation('./college/COURSE.csv')
+        section_table = Relation('./college/SECTION.csv')
+        expectedRes = {
+            'CId': [22, 42, 52],
+            'Title': ['compilers', 'algebra', 'acting'],
+            'DeptId': [10, 20, 30],
+        }
+        cond = ('CId', 'CourseId')
+        assert course_table.antijoin(section_table, cond).filename == expectedRes
+
