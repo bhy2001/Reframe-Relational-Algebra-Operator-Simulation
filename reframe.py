@@ -118,8 +118,6 @@ class Relation():
                 return {"Fail": "No such operator"}
 
         return Relation(data)
-    # def count (self, cols, operation):
-    #     if operation == "groupby":
 
     # Multi-table operations:
 

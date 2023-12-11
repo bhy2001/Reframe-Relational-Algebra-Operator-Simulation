@@ -1,7 +1,7 @@
 # CS-440 FINAL PROJECT
 
 - This project attempts to reimplement reframe's API and extend it to include more relational algebra operations using Python. Operations include:
-
+  - This package only accept in read `.csv` file type
   - Single-table operations:
 
     - **Project**:
@@ -55,3 +55,33 @@
       - Parameters: other, condition
       - Purpose: Performs antijoin on two relations (self and other), on the given condition
       - Output: a new relation, resulting from the outerjoin operation
+
+## Installation
+
+1.  Clone the repository:
+
+    `git clone git@github.com:sturekev/Final-Project-440.git`
+
+2. Create and Activate(win/ubuntu) an Environment for Python
+    ` python3 -m venv venv`
+    
+    Win:
+    `.\venv\Scripts\activate`
+    Ubuntu:
+    `source .\venv\bin\activate`
+
+3.  Install the required dependencies
+
+    ` pip install -r requirements.txt`
+
+4.  Run the application or use aplication:
+
+    Run: `python3 tinycollege.py`
+    Use as package: `from reframe import Relation`
+
+
+## Contributor:
+
+- Truong Phat(Kevin) Tu - Luther College
+- Bach Hy (Bill) Dang - Luther College
+- Mateus Rohden - Luther College
