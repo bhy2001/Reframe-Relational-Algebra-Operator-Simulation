@@ -16,7 +16,8 @@ __all__ = ['Relation', 'GroupWrap']
 # Bill:
 # - Select
 # - Groupby
-
+# - outerJoin
+# - antiJoin 
 # Kevin:
 # - Sort - handle error
 # - Extend - handle error
