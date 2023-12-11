@@ -77,16 +77,17 @@ class Relation():
         if not self.verifyCols([name]):
             return {"Fail"}
         elif not operand0:
-            data[name] = []  
+            data[name] = []
         elif not operand1:
             data[name] = operand0
         elif not operator or operator not in operatorList:
             return {"Fail": "Wrong Operation"}
 
         else:
-            try:            
+            try:
                 data[name] = extendFunc(operand0, operand1, operator)
-            except: return {"Fail": f"{operand0 } and {operand1} not same type"}
+            except:
+                return {"Fail": f"{operand0 } and {operand1} not same type"}
         return Relation(data)
 
     #     select(query)
@@ -179,6 +180,7 @@ class Relation():
                             join_dict[col].append(other.filename[col][j])
 
         return Relation(join_dict)
+
     #     semijoin(other)
 
     def semijoin(self, other, condition):
@@ -197,7 +199,7 @@ class Relation():
 
     def antijoin(self, other, condition):
         data = self.filename
-        dataHead  = self.getTabelHead() 
+        dataHead = self.getTabelHead()
         colD = self.getColData(condition[0])
         otherColD = other.getColData(condition[1])
         res = dict()
@@ -211,7 +213,7 @@ class Relation():
 
     def outerjoin(self, other, condition):
         data = self.filename
-        dataHead  = self.getTabelHead() 
+        dataHead = self.getTabelHead()
         otherHead = other.getTableHead()
         colD = self.getColData(condition[0])
         otherColD = other.getColData(condition[1])
@@ -226,8 +228,8 @@ class Relation():
             if val not in colD:
                 [res[h].append(data[h][idx] | 'null') for h in dataHead]
         return Relation(res)
-    
-    def getColData (self, col): 
+
+    def getColData(self, col):
         try:
             return self.filename[col]
         except:
@@ -247,8 +249,6 @@ class Relation():
 
     def getTableData(self):
         return self.filename
-    
-    def getTabelHead (self):
+
+    def getTabelHead(self):
         return [col for col in self.filename]
-
-
